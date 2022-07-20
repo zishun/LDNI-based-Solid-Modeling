@@ -1899,6 +1899,11 @@ int main(int argc, char *argv[])
 		return false;
 	}
 
+	if (argc > 1)
+	{
+		printf("cmd\n");
+		return 0;
+	}
 	
 	printf("--------------------------------------------------\n");
 	printf("|| Please select the following functions by hot-keys:\n||\n");
@@ -1921,7 +1926,15 @@ int main(int argc, char *argv[])
 	glutAttachMenu(GLUT_RIGHT_BUTTON);
     glutSwapBuffers();
 
-    glutMainLoop();
+	if (argc==1)
+	{
+		glutMainLoop();
+	}
+	else
+	{
+		printf("cmd");
+	}
+    
 	
     return 0;             /* ANSI C requires main to return int. */
 }

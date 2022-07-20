@@ -38,9 +38,11 @@
 #include <stdio.h>
 #include <math.h>
 
+#if defined(_WIN32) || defined(WIN32)
 #include "../common/GL/glut.h"
-
-
+#else
+#include <GL/glut.h>
+#endif
 
 #include "GLKObList.h"
 

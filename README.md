@@ -22,13 +22,12 @@ Features
 
 ### Links
 * [Project page on sourceforge](http://ldnibasedsolidmodeling.sourceforge.net/) 
-* [Youtube 1](https://youtu.be/G75mS1VGqx0)
-* [Youtube 2](https://youtu.be/go3MxEF7cOs)
+* Videos (on youtube): [1](https://youtu.be/G75mS1VGqx0), [2](https://youtu.be/go3MxEF7cOs), [3](https://youtu.be/Oe3rUWWn06Y), [4](https://youtu.be/IfJeQxEzRVE)
 * [LDNI-DLL](https://mewangcl.github.io/Projects/GPUBasedLDNI_DLLProj.htm)
 
 
 ## Build
-Requirements: GPU with compute capability above 2.0 and CUDA 9.0.
+Requirements: GPU with compute capability above 2.0 and CUDA >=9.0.
 * Windows: using the ```sln``` file.
 * Linux: requires glut and glew.
 ```sh

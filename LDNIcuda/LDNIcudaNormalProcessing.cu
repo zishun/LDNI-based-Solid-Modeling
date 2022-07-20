@@ -32,8 +32,11 @@
 #include <malloc.h>
 #include <time.h>
 #include <sys/stat.h>
+#if defined(_WIN32) || defined(WIN32)
 #include "../common/GL/glew.h"
-
+#else
+#include <GL/glew.h>
+#endif
 
 #include "cuda.h"
 #include "cutil.h"

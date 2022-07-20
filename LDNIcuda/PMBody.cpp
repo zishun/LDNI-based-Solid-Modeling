@@ -34,7 +34,11 @@
 #include <string.h>
 #include <math.h>
 
+#if defined(_WIN32) || defined(WIN32)
 #include "../common/GL/glew.h"
+#else
+#include <GL/glew.h>
+#endif
 
 #include "PMBody.h"
 #include <thrust/unique.h>

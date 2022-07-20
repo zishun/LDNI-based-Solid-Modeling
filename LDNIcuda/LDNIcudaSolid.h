@@ -29,9 +29,11 @@
 #ifndef	_CCL_LDNI_CUDA_SOLID
 #define	_CCL_LDNI_CUDA_SOLID
 
-
+#if defined(_WIN32) || defined(WIN32)
 #include "../common/GL/glut.h"
-
+#else
+#include <GL/glut.h>
+#endif
 
 
 #define THREADS_PER_BLOCK			256
