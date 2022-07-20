@@ -38,7 +38,12 @@
 #include <math.h>
 #include <time.h>
 #include <sys/stat.h>
+#if defined(_WIN32) || defined(WIN32)
 #include "../common/GL/glew.h"
+#else
+#include <GL/glew.h>
+#define _stat stat
+#endif
 #include <omp.h>
 
 #include "PMBody.h"
@@ -120,7 +125,7 @@ bool LDNIcpuOperation::BRepToLDNISampling(QuadTrglMesh *mesh, LDNIcpuSolid* &sol
 	//-----------------------------------------------------------------------------------------
 	//	Step 1: Setup the shaders 
 	memset(fileadd,0,256*sizeof(char));	
-	strcat(fileadd,"sampleLDNIVertexShader.vert");
+	strcat(fileadd,"shader/sampleLDNIVertexShader.vert");
 	g_vertexShader = glCreateShaderObjectARB( GL_VERTEX_SHADER_ARB );
 	unsigned char *ShaderAssembly = _readShaderFile( fileadd );
 	VshaderString[0] = (char*)ShaderAssembly;
@@ -134,7 +139,7 @@ bool LDNIcpuOperation::BRepToLDNISampling(QuadTrglMesh *mesh, LDNIcpuSolid* &sol
 	}
 	//-----------------------------------------------------------------------------
 	memset(fileadd,0,256*sizeof(char));	
-	strcat(fileadd,"sampleLDNIGeometryShader.geo");
+	strcat(fileadd,"shader/sampleLDNIGeometryShader.geo");
 	g_GeometryShader = glCreateShaderObjectARB( GL_GEOMETRY_SHADER_EXT );
 	ShaderAssembly = _readShaderFile(fileadd );
 	GshaderString[0] = (char*)ShaderAssembly;
@@ -148,7 +153,7 @@ bool LDNIcpuOperation::BRepToLDNISampling(QuadTrglMesh *mesh, LDNIcpuSolid* &sol
 	}
 	//-----------------------------------------------------------------------------
 	memset(fileadd,0,256*sizeof(char));	
-	strcat(fileadd,"sampleLDNIFragmentShader.frag");
+	strcat(fileadd,"shader/sampleLDNIFragmentShader.frag");
 	g_FragShader = glCreateShaderObjectARB( GL_FRAGMENT_SHADER_ARB );
 	ShaderAssembly = _readShaderFile( fileadd );
 	FshaderString[0] = (char*)ShaderAssembly;

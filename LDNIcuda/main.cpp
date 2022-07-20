@@ -31,18 +31,30 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+
+#if defined(_WIN32) || defined(WIN32)
 #include <io.h>
+#else
+#include <iostream>
+#define _stricmp strcasecmp
+#endif
+
 #include <math.h>
 #include <string.h>
 
 #include <time.h>
+
+#if defined(_WIN32) || defined(WIN32)
 #include "../common/GL/glew.h"
 #include "../common/GL/glut.h"
 #include <windows.h>
+#else
+#include <GL/glew.h>
+#include <GL/glut.h>
+#endif
 
-
-#include "..\GLKLib\GLK.h"
-#include "..\GLKLib\GLKCameraTool.h"
+#include "../GLKLib/GLK.h"
+#include "../GLKLib/GLKCameraTool.h"
 
 
 #include "LDNIDataBoard.h"
@@ -352,6 +364,7 @@ void initFunc()
 void menuFuncFileSave()
 {
 	char filename[256],name[100],exstr[4],answer[20];
+#if defined(_WIN32) || defined(WIN32)
     struct _finddata_t c_file;
     long hFile;
 
@@ -368,6 +381,13 @@ void menuFuncFileSave()
 		scanf("%s",answer);
 		if (answer[0]=='n' || answer[0]=='N') return;
 	}
+#else
+	std::string line;
+	std::getline(std::cin, line);
+	std::cout << "Please input a path > " << std::flush;
+    std::getline(std::cin, line);
+	strcpy(filename, line.c_str());
+#endif
 
 	int length=(int)(strlen(filename));
 	exstr[0]=filename[length-3];
@@ -450,6 +470,7 @@ void menuFuncFileSave()
 
 bool fileChosenByList(char directorty[], char filespef2[], char selectedFileName[])
 {
+#if defined(_WIN32) || defined(WIN32)
     struct _finddata_t c_file;
     long hFile;
 	long fileNum=0;
@@ -489,11 +510,15 @@ bool fileChosenByList(char directorty[], char filespef2[], char selectedFileName
 	strcpy(selectedFileName,c_file.name);
 	printf("----------------------------------------\nSelected File: %s\n",selectedFileName);
 	return true;
+#else
+	printf("Not implemented\n");
+	return false;
+#endif
 }
 
 void menuFuncFileOpenAll()
 {
-
+#if defined(_WIN32) || defined(WIN32)
 	WIN32_FIND_DATA FindFileData;
 	HANDLE hFind = INVALID_HANDLE_VALUE;
 
@@ -606,12 +631,15 @@ void menuFuncFileOpenAll()
 	printf("--------------------------------------------\n");
 	printf("Total Face Num: %d\n",l); 
 	printf("Open File Time (ms): %ld\n",clock()-time); time=clock();
-
+#else
+	printf("Not implemented\n");
+#endif
 }
 
 void menuFuncFileOpen()
 {
 	char filename[256],name[100],exstr[4];
+#if defined(_WIN32) || defined(WIN32)
     struct _finddata_t c_file;
     long hFile;
 
@@ -623,6 +651,12 @@ void menuFuncFileOpen()
 		printf( "The file - %s is not found!\n", filename);
 		return;
 	}
+#else
+    std::string line;
+	std::cout << "Please input a path > " << std::flush;
+    std::getline(std::cin, line);
+	strcpy(filename, line.c_str());
+#endif
 
 	int length=(int)(strlen(filename));
 	exstr[0]=filename[length-3];

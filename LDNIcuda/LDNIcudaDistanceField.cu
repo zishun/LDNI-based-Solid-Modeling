@@ -11,7 +11,7 @@
 #include "cutil.h"
 #include "cuda_gl_interop.h"
 
-#include "..\GLKLib\GLK.h"
+#include "../GLKLib/GLK.h"
 
 #include "PMBody.h"
 #include "LDNIcpuSolid.h"
