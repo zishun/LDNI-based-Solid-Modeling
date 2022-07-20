@@ -359,36 +359,9 @@ void initFunc()
 //---------------------------------------------------------------------------------
 //	The following functions are for menu processing
 
-
-
-void menuFuncFileSave()
+void SaveFile(char filename[])
 {
-	char filename[256],name[100],exstr[4],answer[20];
-#if defined(_WIN32) || defined(WIN32)
-    struct _finddata_t c_file;
-    long hFile;
-
-	printf("\nPlease specify the file name for export: ");
-	scanf("%s",name);
-	printf("\n");
-
-	strcpy(filename,"Data\\");	
-	strcat(filename,name);
-	
-    // Detect whether the file exist.
-    if( (hFile = _findfirst( filename, &c_file )) != -1L ) {
-		printf( "The file - %s has been found, do you want to overwite it? (y/n)\n", filename);
-		scanf("%s",answer);
-		if (answer[0]=='n' || answer[0]=='N') return;
-	}
-#else
-	std::string line;
-	std::getline(std::cin, line);
-	std::cout << "Please input a path > " << std::flush;
-    std::getline(std::cin, line);
-	strcpy(filename, line.c_str());
-#endif
-
+	char exstr[4];
 	int length=(int)(strlen(filename));
 	exstr[0]=filename[length-3];
 	exstr[1]=filename[length-2];
@@ -466,6 +439,36 @@ void menuFuncFileSave()
 	else {
 		printf("Warning: incorrect file extension, no file is saved!\n");
 	}
+}
+
+void menuFuncFileSave()
+{
+	char filename[256],name[100],answer[20];
+#if defined(_WIN32) || defined(WIN32)
+    struct _finddata_t c_file;
+    long hFile;
+
+	printf("\nPlease specify the file name for export: ");
+	scanf("%s",name);
+	printf("\n");
+
+	strcpy(filename,"Data\\");	
+	strcat(filename,name);
+	
+    // Detect whether the file exist.
+    if( (hFile = _findfirst( filename, &c_file )) != -1L ) {
+		printf( "The file - %s has been found, do you want to overwite it? (y/n)\n", filename);
+		scanf("%s",answer);
+		if (answer[0]=='n' || answer[0]=='N') return;
+	}
+#else
+	std::string line;
+	std::getline(std::cin, line);
+	std::cout << "Please input a path > " << std::flush;
+    std::getline(std::cin, line);
+	strcpy(filename, line.c_str());
+#endif
+	SaveFile(filename);
 }
 
 bool fileChosenByList(char directorty[], char filespef2[], char selectedFileName[])
@@ -636,28 +639,10 @@ void menuFuncFileOpenAll()
 #endif
 }
 
-void menuFuncFileOpen()
+
+void OpenFile(char filename[])
 {
-	char filename[256],name[100],exstr[4];
-#if defined(_WIN32) || defined(WIN32)
-    struct _finddata_t c_file;
-    long hFile;
-
-	if (!fileChosenByList("Data\\","*",name)) return;
-	strcpy(filename,"Data\\");	strcat(filename,name);
-
-    // Detect whether the file exist.
-    if( (hFile = _findfirst( filename, &c_file )) == -1L ) {
-		printf( "The file - %s is not found!\n", filename);
-		return;
-	}
-#else
-    std::string line;
-	std::cout << "Please input a path > " << std::flush;
-    std::getline(std::cin, line);
-	strcpy(filename, line.c_str());
-#endif
-
+	char exstr[4];
 	int length=(int)(strlen(filename));
 	exstr[0]=filename[length-3];
 	exstr[1]=filename[length-2];
@@ -775,6 +760,31 @@ void menuFuncFileOpen()
 		printf("Refresh time (ms): %ld\n",clock()-time); time=clock();
 	}
 
+}
+
+void menuFuncFileOpen()
+{
+	char filename[256];
+#if defined(_WIN32) || defined(WIN32)
+	char name[100];
+    struct _finddata_t c_file;
+    long hFile;
+
+	if (!fileChosenByList("Data\\","*",name)) return;
+	strcpy(filename,"Data\\");	strcat(filename,name);
+
+    // Detect whether the file exist.
+    if( (hFile = _findfirst( filename, &c_file )) == -1L ) {
+		printf( "The file - %s is not found!\n", filename);
+		return;
+	}
+#else
+    std::string line;
+	std::cout << "Please input a path > " << std::flush;
+    std::getline(std::cin, line);
+	strcpy(filename, line.c_str());
+#endif
+	OpenFile(filename);
 }
 
 void menuFuncMeshBndBoxComp()
@@ -1037,7 +1047,7 @@ void menuFuncSLAContourSupportGeneration()
 
 	_pDataBoard.m_solidLDNIBody->CompRange();
 	range = _pDataBoard.m_solidLDNIBody->GetRange();
-	printf("ragne %f \n",range);
+	printf("range %f \n",range);
 	printf("\nPlease specify the binary image sampling width: ");
 	scanf("%s",inputStr);	printf("\n");	sscanf(inputStr,"%f",&samplewidth);
 	printf("The sampling width is :%f \n", samplewidth);
@@ -1101,7 +1111,7 @@ void menuFuncFDMContourSupportGeneration()
 
 	_pDataBoard.m_solidLDNIBody->CompRange();
 	range = _pDataBoard.m_solidLDNIBody->GetRange();
-	printf("ragne %f \n",range);
+	printf("range %f \n",range);
 	printf("\nPlease specify the binary image sampling width: ");
 	scanf("%s",inputStr);	printf("\n");	sscanf(inputStr,"%f",&samplewidth);
 	//samplewidth = 0.005;
@@ -1153,7 +1163,7 @@ void menuFuncFDMContourGeneration()
 	_pDataBoard.m_solidLDNIBody->CompRange();
 	//cmesh->setRange(_pDataBoard.m_solidLDNIBody->GetRange());
 	range = _pDataBoard.m_solidLDNIBody->GetRange();
-	printf("ragne %f \n",range);
+	printf("range %f \n",range);
 	printf("\nPlease specify the binary image sampling width: ");
 	scanf("%s",inputStr);	printf("\n");	sscanf(inputStr,"%f",&samplewidth);
 	printf("The sampling width is :%f \n", samplewidth);
@@ -1854,6 +1864,164 @@ int buildPopupMenu (void)
 	return mainMenu;
 }
 
+void cmd_boolean(bool bCUDA, int nOperatorType, int nRes)
+{
+	QuadTrglMesh *meshA=(QuadTrglMesh *)(_pDataBoard.m_polyMeshBody->GetMeshList().GetHead());
+	QuadTrglMesh *meshB=(QuadTrglMesh *)(_pDataBoard.m_polyMeshBody->GetMeshList().GetTail());
+
+	LDNIcpuSolid *solid=NULL,*newSolid;
+	LDNIcudaSolid *cudaSolid=NULL,*newCudaSolid;
+	if ((_pDataBoard.m_solidLDNIBody!=NULL) && (_pDataBoard.m_solidLDNIBody->m_cudaSolid!=NULL)) 
+		cudaSolid=_pDataBoard.m_solidLDNIBody->m_cudaSolid;
+
+	//-----------------------------------------------------------------------------------
+	//	Need to release the memory of displaying a object;
+	//		otherwise, the sampling may be abnormal if the graphics memory is not enough
+	_pDataBoard.m_polyMeshBody->DeleteGLList(true);
+	_pDataBoard.m_polyMeshBody->DeleteGLList(false);
+	if (_pDataBoard.m_solidLDNIBody!=NULL) 
+		_pDataBoard.m_solidLDNIBody->DeleteVBOGLList();
+
+	long time=clock();
+	if (cudaSolid!=NULL) 
+		{LDNIcudaOperation::BooleanOperation(cudaSolid,meshB,nOperatorType);	newCudaSolid=cudaSolid;	}
+	else {
+		LDNIcudaOperation::BooleanOperation(meshA,meshB,nRes,nOperatorType,newCudaSolid);
+	}
+
+	printf("--------------------------------------------\n");
+	printf("Total Processing Time: %ld (ms)\n",clock()-time); time=clock();
+	printf("--------------------------------------------\n\n");
+
+	if (meshA!=meshB) {
+		_pDataBoard.m_polyMeshBody->GetMeshList().RemoveHead();	
+		_pDataBoard.m_polyMeshBody->GetMeshList().RemoveTail();
+		delete meshA;	delete meshB;
+	}
+	else {	// meshA==meshB
+		_pDataBoard.m_polyMeshBody->GetMeshList().RemoveHead();
+		delete meshA;
+	}
+	if (_pDataBoard.m_polyMeshBody->GetMeshList().IsEmpty()) {
+		_pGLK.DelDisplayObj(_pDataBoard.m_polyMeshBody);
+		_pDataBoard.m_polyMeshBody=NULL;
+	}
+	else {
+		if (_pGLK.GetShading()) _pDataBoard.m_polyMeshBody->BuildGLList(true);
+		if (_pGLK.GetMesh()) _pDataBoard.m_polyMeshBody->BuildGLList(false);
+	}
+
+	bool bLight=false;	
+	if (_pDataBoard.m_solidLDNIBody!=NULL) {
+		bLight=_pDataBoard.m_solidLDNIBody->GetLighting();
+		if (bCUDA)
+			_pDataBoard.m_solidLDNIBody->m_cudaSolid=NULL;
+		else
+			_pDataBoard.m_solidLDNIBody->m_solid=NULL;
+		_pGLK.DelDisplayObj(_pDataBoard.m_solidLDNIBody);
+	}
+	LDNISolidBody *solidBody=new LDNISolidBody;
+	if (bCUDA) {solidBody->m_cudaSolid=newCudaSolid;} else {solidBody->m_solid=newSolid;}
+	solidBody->SetLighting(bLight);	solidBody->CompRange();
+	time=clock();
+	solidBody->BuildGLList(_pDataBoard.m_bLDNISampleNormalDisplay);
+	printf("Build point GL List Time (ms): %ld\n",clock()-time); time=clock();
+	_pGLK.AddDisplayObj(solidBody, true);
+	_pDataBoard.m_solidLDNIBody=solidBody;
+}
+
+void cmd_contour()
+{
+	if (_pDataBoard.m_solidLDNIBody==NULL || _pDataBoard.m_solidLDNIBody->m_cudaSolid==NULL) {
+		printf("None cuda-LDNI-solid found!\n");	return;
+	}
+
+	if (!(_pDataBoard.m_polyMeshBody)) 
+		_pDataBoard.m_polyMeshBody=new PMBody;
+	else
+		_pGLK.DelDisplayObj2(_pDataBoard.m_polyMeshBody);
+
+	int nRes; char inputStr[200];
+	printf("\nThe resolution of LDNI solid is: %d\nPlease specify the resolution for contouring: ",
+			_pDataBoard.m_solidLDNIBody->m_cudaSolid->GetResolution());
+	scanf("%s",inputStr);	printf("\n");	sscanf(inputStr,"%d",&nRes);
+	if (nRes<=0) {printf("Incorrect input resolution: %d!!!\n",nRes); return;}
+//	if (nRes>512) {printf("Too large resolution ( larger than 512 ), which cannot fit into the memory of graphics card!!!\n",nRes); return;}
+	printf("Sampling Resolution: %d\n",nRes);
+
+	bool bWithSelfIntersectionPreventation=false;
+	char answer[20];
+	printf( "Do you wish to turn on the function of self-intersection preventation, which may lead to poorer surface quality? (y/n)\n");	
+	scanf("%s",answer);
+	if (answer[0]=='y' || answer[0]=='Y') bWithSelfIntersectionPreventation=true;
+
+	long time=clock();	QuadTrglMesh *mesh;
+	LDNIcudaOperation::LDNIToBRepReconstruction(_pDataBoard.m_solidLDNIBody->m_cudaSolid,mesh,nRes,bWithSelfIntersectionPreventation);
+	printf("--------------------------------------------\n");
+	printf("Total time of mesh contouring: %ld (ms)\n",clock()-time); time=clock();
+	_pDataBoard.m_polyMeshBody->GetMeshList().AddTail(mesh);	
+	_pDataBoard.m_polyMeshBody->computeRange();
+	if (_pGLK.GetShading()) _pDataBoard.m_polyMeshBody->BuildGLList(true);
+	if (_pGLK.GetMesh()) _pDataBoard.m_polyMeshBody->BuildGLList(false);
+	_pGLK.AddDisplayObj(_pDataBoard.m_polyMeshBody);
+	_pGLK.DelDisplayObj2(_pDataBoard.m_solidLDNIBody);	
+	delete (_pDataBoard.m_solidLDNIBody);
+	_pDataBoard.m_solidLDNIBody=NULL;
+	printf("Build GL List Time (ms): %ld\n",clock()-time); time=clock();
+
+	_pGLK.refresh();
+}
+
+void cmd(int argc, char *argv[]) {
+	int cnt = 1;
+	bool bCUDA = true;
+	int nOperatorType = 0; // for boolean
+	int nRes = -1;
+	while (cnt < argc) {
+		std::string arg(argv[cnt]);
+		if (arg == "-b") { // boolean
+			// -b <fn_mesh_A> -r <resolution> -<operation> <fn_mesh_B>
+			if (std::string(argv[cnt+2]) != "-r")
+			{
+				std::cout << "requires resolution -r" << std::endl;
+				return;
+			}
+			nRes = atoi(argv[cnt+3]);
+			OpenFile(argv[cnt+1]);
+			cnt += 4;
+		}
+		else if (arg == "-u") { // union
+			nOperatorType=0;
+			OpenFile(argv[cnt+1]);
+			cmd_boolean(bCUDA, nOperatorType, nRes);
+			cnt += 2;
+		}
+		else if (arg == "-i") { // intersection
+			nOperatorType=1;
+			OpenFile(argv[cnt+1]);
+			cmd_boolean(bCUDA, nOperatorType, nRes);
+			cnt += 2;
+		}
+		else if (arg == "-d") { // difference
+			nOperatorType=2;
+			OpenFile(argv[cnt+1]);
+			cmd_boolean(bCUDA, nOperatorType, nRes);
+			cnt += 2;
+		}
+		else if (arg == "-r") { // inversed-difference
+			nOperatorType=3;
+			OpenFile(argv[cnt+1]);
+			cmd_boolean(bCUDA, nOperatorType, nRes);
+			cnt += 2;
+		}
+		else if (arg == "-o") { // output
+			cmd_contour();
+			SaveFile(argv[cnt+1]);
+			cnt += 2;
+		}
+	}
+}
+
 
 //---------------------------------------------------------------------------------
 //	The major function of a program
@@ -1901,7 +2069,7 @@ int main(int argc, char *argv[])
 
 	if (argc > 1)
 	{
-		printf("cmd\n");
+		cmd(argc, argv);
 		return 0;
 	}
 	
@@ -1926,15 +2094,7 @@ int main(int argc, char *argv[])
 	glutAttachMenu(GLUT_RIGHT_BUTTON);
     glutSwapBuffers();
 
-	if (argc==1)
-	{
-		glutMainLoop();
-	}
-	else
-	{
-		printf("cmd");
-	}
-    
+	glutMainLoop();    
 	
     return 0;             /* ANSI C requires main to return int. */
 }

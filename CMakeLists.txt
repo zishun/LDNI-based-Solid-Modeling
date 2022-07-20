@@ -70,6 +70,11 @@ add_custom_command(TARGET ${PROJECT_NAME} PRE_BUILD
             ${CMAKE_SOURCE_DIR}/LDNIcuda/shader
             ${CMAKE_CURRENT_BINARY_DIR}/shader
 )
+add_custom_command(TARGET ${PROJECT_NAME} PRE_BUILD
+            COMMAND ${CMAKE_COMMAND} -E create_symlink
+            ${CMAKE_SOURCE_DIR}/LDNIcuda/rp_files
+            ${CMAKE_CURRENT_BINARY_DIR}/rp_files
+)
 
 if (MSVC)
 endif (MSVC)

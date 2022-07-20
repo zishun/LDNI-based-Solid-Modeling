@@ -448,7 +448,7 @@ void LDNIcudaOperation::LDNIFDMContouring_GenerationwithSupporting(LDNIcudaSolid
 		
 	bool bOutPutSGM = false;
 	char inputStr[10];
-	printf("\Export SGM File? (y/n): ");
+	printf("Export SGM File? (y/n): ");
 	scanf("%s",inputStr);
 	if (inputStr[0]=='y' || inputStr[0]=='Y') 
 	{

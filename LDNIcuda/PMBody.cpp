@@ -1894,7 +1894,7 @@ void ContourMesh::ArrayToImage(bool *InNodes1, bool *InNodes2, int imageSize[], 
 			if (i<base)
 			{
 				filename[0] = '\0';
-				strcat(filename,"Image\\");
+				strcat(filename,"Image/");
 				sprintf(value,"%d",i) ;
 				strcat(filename,value);
 				strcat(filename,".bmp");
@@ -1907,7 +1907,7 @@ void ContourMesh::ArrayToImage(bool *InNodes1, bool *InNodes2, int imageSize[], 
 			else
 			{
 				filename[0] = '\0';
-				strcat(filename,"Image\\");
+				strcat(filename,"Image/");
 				for(j=0; j < imageSize[0]; j++)
 				{
 
@@ -2322,7 +2322,7 @@ bool RPFilesInterface::OutputInsightSGMFile(ContourMesh* c_mesh,const char *file
 	char filelocation[256] = "";
 
 
-	strcpy(filepath,"rp files\\");
+	strcpy(filepath,"rp_files_");
 	strcpy(name,filename);
 	strcpy(fileext,".sgm");
 
@@ -2333,7 +2333,7 @@ bool RPFilesInterface::OutputInsightSGMFile(ContourMesh* c_mesh,const char *file
 	FILE *sgm_source;
 	FILE *sgm_output;
 
-	sgm_source = fopen("rp files\\sgmsource.sgm", "r");
+	sgm_source = fopen("rp_files/sgmsource.sgm", "r");
 	sgm_output = fopen(filelocation, "w");
     if(!sgm_source)
 	{
