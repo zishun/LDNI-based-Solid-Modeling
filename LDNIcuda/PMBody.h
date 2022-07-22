@@ -165,12 +165,12 @@ public:
 	void CompNormal(int faceIndex/*starting from 1*/, float nv[]);
 	void CompBoundingBox(float boundingBox[]);
 
-	bool InputOBJFile(char *filename);
+	bool InputOBJFile(const char *filename);
 	bool OutputOBJFile(char *filename);
 
-	bool InputSTLFile(char *filename);
+	bool InputSTLFile(const char *filename);
 
-	bool InputMEBFile(char *filename);	// the binary file of QUAD/TRGL mesh object
+	bool InputMEBFile(const char *filename);	// the binary file of QUAD/TRGL mesh object
 	bool OutputMEBFile(char *filename);	// the binary file of QUAD/TRGL mesh object
 
 	bool InputOBJFileFromMapping(char *filedata);

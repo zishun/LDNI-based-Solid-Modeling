@@ -753,7 +753,7 @@ bool QuadTrglMesh::OutputOBJFile(char *filename)
 	return true;
 }
 
-bool QuadTrglMesh::InputMEBFile(char *filename)
+bool QuadTrglMesh::InputMEBFile(const char *filename)
 {
 	FILE *fp;	int nodeNum, faceNum;
 
@@ -934,7 +934,7 @@ bool QuadTrglMesh::InputOBJFileFromMapping(char *filedata)
 	return true;
 }
 
-bool QuadTrglMesh::InputSTLFile(char *filename)
+bool QuadTrglMesh::InputSTLFile(const char *filename)
 {
 	FILE *fp;
 	unsigned int ver[4];
@@ -997,7 +997,7 @@ bool QuadTrglMesh::InputSTLFile(char *filename)
 	return true;
 }
 
-bool QuadTrglMesh::InputOBJFile(char *filename)
+bool QuadTrglMesh::InputOBJFile(const char *filename)
 {
 	FILE *fp;
 	char fields[4][255];

@@ -39,6 +39,7 @@
 #define _stricmp strcasecmp
 #endif
 
+#include <fstream>
 #include <math.h>
 #include <string.h>
 
@@ -380,7 +381,7 @@ void SaveFile(char filename[])
 			if (mesh!=NULL) {
 				long time=clock();	printf("Starting to write the OBJ file ...\n");
 				mesh->OutputOBJFile(filename);
-				printf("Completed and take %ld (ms)\n",clock()-time);
+				printf("Completed and take %ld (ms)\n",(clock()-time)/(CLOCKS_PER_SEC/1000));
 			}
 		}
 	}
@@ -396,7 +397,7 @@ void SaveFile(char filename[])
 			if (mesh!=NULL) {
 				long time=clock();	printf("Starting to write the MEB file ...\n");
 				mesh->OutputMEBFile(filename);
-				printf("Completed and take %ld (ms)\n",clock()-time);
+				printf("Completed and take %ld (ms)\n",(clock()-time)/(CLOCKS_PER_SEC/1000));
 			}
 		}
 	}
@@ -405,7 +406,7 @@ void SaveFile(char filename[])
 			if (_pDataBoard.m_solidLDNIBody->m_solid!=NULL) {
 				long time=clock();	printf("Starting to write the LDI file ...\n");
 				_pDataBoard.m_solidLDNIBody->m_solid->FileSave(filename);
-				printf("Completed and take %ld (ms)\n",clock()-time);
+				printf("Completed and take %ld (ms)\n",(clock()-time)/(CLOCKS_PER_SEC/1000));
 			}
 			else {
 				printf("Warning: no CPU-LDNI solid is found!\n");
@@ -417,7 +418,7 @@ void SaveFile(char filename[])
 			if (_pDataBoard.m_solidLDNIBody->m_cudaSolid!=NULL) {
 				long time=clock();	printf("Starting to write the LDA file ...\n");
 				_pDataBoard.m_solidLDNIBody->m_cudaSolid->FileSave(filename);
-				printf("Completed and take %ld (ms)\n",clock()-time);
+				printf("Completed and take %ld (ms)\n",(clock()-time)/(CLOCKS_PER_SEC/1000));
 			}
 			else {
 				printf("Warning: no CUDA-LDNI solid is found!\n");
@@ -429,7 +430,7 @@ void SaveFile(char filename[])
 			if (_pDataBoard.m_solidLDNIBody->m_cudaSolid!=NULL) {
 				long time=clock();	printf("Starting to write the LDN file ...\n");
 				_pDataBoard.m_solidLDNIBody->m_cudaSolid->ExportLDNFile(filename);
-				printf("Completed and take %ld (ms)\n",clock()-time);
+				printf("Completed and take %ld (ms)\n",(clock()-time)/(CLOCKS_PER_SEC/1000));
 			}
 			else {
 				printf("Warning: no cuda-LDNI solid is found!\n");
@@ -613,7 +614,7 @@ void menuFuncFileOpenAll()
 					_pDataBoard.m_polyMeshBody->computeRange();
 					mesh->SetMeshId(_pDataBoard.m_polyMeshBody->GetMeshList().GetCount());
 					l += mesh->GetFaceNumber();
-					printf("OBJ File Import Time (ms): %ld\n",clock()-time); 
+					printf("OBJ File Import Time (ms): %ld\n",(clock()-time)/(CLOCKS_PER_SEC/1000)); 
 				}else 
 				{delete mesh;	printf("OBJ file importing fails!\n"); 	return;}
 				
@@ -633,14 +634,14 @@ void menuFuncFileOpenAll()
 	}
 	printf("--------------------------------------------\n");
 	printf("Total Face Num: %d\n",l); 
-	printf("Open File Time (ms): %ld\n",clock()-time); time=clock();
+	printf("Open File Time (ms): %ld\n",(clock()-time)/(CLOCKS_PER_SEC/1000)); time=clock();
 #else
 	printf("Not implemented\n");
 #endif
 }
 
 
-void OpenFile(char filename[])
+void OpenFile(const char* filename)
 {
 	char exstr[4];
 	int length=(int)(strlen(filename));
@@ -661,14 +662,14 @@ void OpenFile(char filename[])
 			{_pDataBoard.m_solidLDNIBody->m_cudaSolid=solid;}
 		else
 			{delete solid;	printf("LDB file importing fails!\n"); 	return;}
-		printf("LDB File Import Time (ms): %ld\n",clock()-time); 
+		printf("LDB File Import Time (ms): %ld\n",(clock()-time)/(CLOCKS_PER_SEC/1000)); 
 		_pDataBoard.m_solidLDNIBody->CompRange();
 		time=clock();
 		_pDataBoard.m_solidLDNIBody->BuildGLList(_pDataBoard.m_bLDNISampleNormalDisplay);
-		printf("Build point GL List Time (ms): %ld\n",clock()-time); time=clock();
+		printf("Build point GL List Time (ms): %ld\n",(clock()-time)/(CLOCKS_PER_SEC/1000)); time=clock();
 		printf("--------------------------------------------\n");
 		_pGLK.AddDisplayObj(_pDataBoard.m_solidLDNIBody, true);
-		printf("Refresh time (ms): %ld\n",clock()-time); time=clock();
+		printf("Refresh time (ms): %ld\n",(clock()-time)/(CLOCKS_PER_SEC/1000)); time=clock();
 		printf("Total sample number: %d\n",_pDataBoard.m_solidLDNIBody->m_cudaSolid->GetSampleNumber());
 	}
 	else if (_stricmp(exstr,"ldb")==0) {	//.ldb file
@@ -683,14 +684,14 @@ void OpenFile(char filename[])
 			{_pDataBoard.m_solidLDNIBody->m_solid=solid;}
 		else
 			{delete solid;	printf("LDB file importing fails!\n"); 	return;}
-		printf("LDB File Import Time (ms): %ld\n",clock()-time); 
+		printf("LDB File Import Time (ms): %ld\n",(clock()-time)/(CLOCKS_PER_SEC/1000)); 
 		_pDataBoard.m_solidLDNIBody->CompRange();
 		time=clock();
 		_pDataBoard.m_solidLDNIBody->BuildGLList(_pDataBoard.m_bLDNISampleNormalDisplay);
-		printf("Build point GL List Time (ms): %ld\n",clock()-time); time=clock();
+		printf("Build point GL List Time (ms): %ld\n",(clock()-time)/(CLOCKS_PER_SEC/1000)); time=clock();
 		printf("--------------------------------------------\n");
 		_pGLK.AddDisplayObj(_pDataBoard.m_solidLDNIBody, true);
-		printf("Refresh time (ms): %ld\n",clock()-time); time=clock();
+		printf("Refresh time (ms): %ld\n",(clock()-time)/(CLOCKS_PER_SEC/1000)); time=clock();
 	}
 	else if (_stricmp(exstr,"ldn")==0) {	//.ldn binary file
 	}
@@ -706,7 +707,7 @@ void OpenFile(char filename[])
 			_pDataBoard.m_polyMeshBody->computeRange();
 			mesh->SetMeshId(_pDataBoard.m_polyMeshBody->GetMeshList().GetCount());
 			
-			printf("OBJ File Import Time (ms): %ld\n",clock()-time); 
+			printf("OBJ File Import Time (ms): %ld\n",(clock()-time)/(CLOCKS_PER_SEC/1000)); 
 		}else 
 			{delete mesh;	printf("OBJ file importing fails!\n"); 	return;}
 		time=clock();	
@@ -714,7 +715,7 @@ void OpenFile(char filename[])
 		if (_pGLK.GetMesh()) _pDataBoard.m_polyMeshBody->BuildGLList(false);
 		printf("--------------------------------------------\n");
 		_pGLK.AddDisplayObj(_pDataBoard.m_polyMeshBody,true);		
-		printf("Build GL List Time (ms): %ld\n",clock()-time); time=clock();
+		printf("Build GL List Time (ms): %ld\n",(clock()-time)/(CLOCKS_PER_SEC/1000)); time=clock();
 	}
 	else if (_stricmp(exstr,"stl")==0) {	//.stl file
 		if (!(_pDataBoard.m_polyMeshBody)) 
@@ -728,7 +729,7 @@ void OpenFile(char filename[])
 			_pDataBoard.m_polyMeshBody->computeRange();
 			mesh->SetMeshId(_pDataBoard.m_polyMeshBody->GetMeshList().GetCount());
 			
-			printf("STL File Import Time (ms): %ld\n",clock()-time);
+			printf("STL File Import Time (ms): %ld\n",(clock()-time)/(CLOCKS_PER_SEC/1000));
 		}else 
 			{delete mesh;	printf("STL file importing fails!\n"); 	return;}
 		time=clock();	
@@ -736,7 +737,7 @@ void OpenFile(char filename[])
 		if (_pGLK.GetMesh()) _pDataBoard.m_polyMeshBody->BuildGLList(false);
 		printf("--------------------------------------------\n");
 		_pGLK.AddDisplayObj(_pDataBoard.m_polyMeshBody,true);		
-		printf("Build GL List Time (ms): %ld\n",clock()-time); time=clock();
+		printf("Build GL List Time (ms): %ld\n",(clock()-time)/(CLOCKS_PER_SEC/1000)); time=clock();
 	}
 	else if (_stricmp(exstr,"meb")==0) {	//.meb file
 		if (!(_pDataBoard.m_polyMeshBody)) 
@@ -748,18 +749,28 @@ void OpenFile(char filename[])
 		if (mesh->InputMEBFile(filename)) {
 			_pDataBoard.m_polyMeshBody->GetMeshList().AddTail(mesh);	
 			_pDataBoard.m_polyMeshBody->computeRange();
-			printf("MEB File Import Time (ms): %ld\n",clock()-time); 
+			printf("MEB File Import Time (ms): %ld\n",(clock()-time)/(CLOCKS_PER_SEC/1000)); 
 		}else 
 			{delete mesh;	printf("MEB file importing fails!\n"); 	return;}
 		time=clock();	
 		if (_pGLK.GetShading()) _pDataBoard.m_polyMeshBody->BuildGLList(true);
 		if (_pGLK.GetMesh()) _pDataBoard.m_polyMeshBody->BuildGLList(false);
-		printf("Build GL List Time (ms): %ld\n",clock()-time); time=clock();
+		printf("Build GL List Time (ms): %ld\n",(clock()-time)/(CLOCKS_PER_SEC/1000)); time=clock();
 		printf("--------------------------------------------\n");
 		_pGLK.AddDisplayObj(_pDataBoard.m_polyMeshBody,true);
-		printf("Refresh time (ms): %ld\n",clock()-time); time=clock();
+		printf("Refresh time (ms): %ld\n",(clock()-time)/(CLOCKS_PER_SEC/1000)); time=clock();
 	}
 
+}
+
+void OpenList(const char* filename)
+{
+	std::ifstream input(filename);
+	for( std::string line; getline( input, line ); )
+	{
+		OpenFile(line.c_str());
+	}
+	input.close();
 }
 
 void menuFuncFileOpen()
@@ -934,7 +945,7 @@ void menuFuncLDNISampling(bool bCUDA)
 		LDNIcpuOperation::BRepToLDNISampling(mesh,solid,bndBox,nRes);
 	}
 	printf("--------------------------------------------\n");
-	printf("Total Sampling Time: %ld (ms)\n",clock()-time); time=clock();
+	printf("Total Sampling Time: %ld (ms)\n",(clock()-time)/(CLOCKS_PER_SEC/1000)); time=clock();
 	printf("--------------------------------------------\n\n");
 
 	if (_pDataBoard.m_solidLDNIBody) _pGLK.DelDisplayObj(_pDataBoard.m_solidLDNIBody);
@@ -957,11 +968,11 @@ void menuFuncLDNISampling(bool bCUDA)
 	solidBody->CompRange();
 	time=clock();
 	solidBody->BuildGLList(_pDataBoard.m_bLDNISampleNormalDisplay);
-	printf("Build point GL List Time (ms): %ld\n",clock()-time); time=clock();
+	printf("Build point GL List Time (ms): %ld\n",(clock()-time)/(CLOCKS_PER_SEC/1000)); time=clock();
 	printf("--------------------------------------------\n");
 	_pDataBoard.m_solidLDNIBody=solidBody;
 	_pGLK.AddDisplayObj(solidBody, true);
-	printf("Refresh time (ms): %ld\n",clock()-time); time=clock();
+	printf("Refresh time (ms): %ld\n",(clock()-time)/(CLOCKS_PER_SEC/1000)); time=clock();
 }
 
 //void menuFuncSLAImageGeneration()
@@ -1011,7 +1022,7 @@ void menuFuncLDNISampling(bool bCUDA)
 //	_pGLK.SetContour(true);
 //	_pGLK.AddDisplayObj(_pDataBoard.m_polyMeshBody, true);
 //
-//	//printf("Build GL List Time (ms): %ld\n",clock()-time); time=clock();
+//	//printf("Build GL List Time (ms): %ld\n",(clock()-time)/(CLOCKS_PER_SEC/1000)); time=clock();
 //
 //	_pGLK.refresh();
 //
@@ -1084,7 +1095,7 @@ void menuFuncSLAContourSupportGeneration()
 	_pGLK.SetContour(true);
 	_pGLK.AddDisplayObj(_pDataBoard.m_polyMeshBody, true);
 
-	//printf("Build GL List Time (ms): %ld\n",clock()-time); time=clock();
+	//printf("Build GL List Time (ms): %ld\n",(clock()-time)/(CLOCKS_PER_SEC/1000)); time=clock();
 
 	_pGLK.refresh();
 }
@@ -1137,7 +1148,7 @@ void menuFuncFDMContourSupportGeneration()
 	_pGLK.SetContour(true);
 	_pGLK.AddDisplayObj(_pDataBoard.m_polyMeshBody, true);
 
-	//printf("Build GL List Time (ms): %ld\n",clock()-time); time=clock();
+	//printf("Build GL List Time (ms): %ld\n",(clock()-time)/(CLOCKS_PER_SEC/1000)); time=clock();
 
 	_pGLK.refresh();
 }
@@ -1186,7 +1197,7 @@ void menuFuncFDMContourGeneration()
 	_pGLK.SetContour(true);
 	_pGLK.AddDisplayObj(_pDataBoard.m_polyMeshBody, true);
 
-	//printf("Build GL List Time (ms): %ld\n",clock()-time); time=clock();
+	//printf("Build GL List Time (ms): %ld\n",(clock()-time)/(CLOCKS_PER_SEC/1000)); time=clock();
 
 	_pGLK.refresh();
 
@@ -1227,7 +1238,7 @@ void menuFuncLDNIOffsetting(bool bSpatialHashingBased, bool bRayPacking, bool bS
 		LDNIcudaOperation::SolidOffsetting(_pDataBoard.m_solidLDNIBody->m_cudaSolid, newSolid, ww*offset);
 	}
 	printf("---------------------------------------------------------------\n");
-	printf("Processing Time for Solid Offsetting is: %ld (ms)\n",clock()-time);	time=clock();
+	printf("Processing Time for Solid Offsetting is: %ld (ms)\n",(clock()-time)/(CLOCKS_PER_SEC/1000)); time=clock();
 	if (newSolid->GetSampleNumber()==0) {delete newSolid;	newSolid=NULL;}
 	if (newSolid!=NULL) 
 		{delete (_pDataBoard.m_solidLDNIBody->m_cudaSolid);_pDataBoard.m_solidLDNIBody->m_cudaSolid=newSolid;}
@@ -1237,7 +1248,7 @@ void menuFuncLDNIOffsetting(bool bSpatialHashingBased, bool bRayPacking, bool bS
 //	time=clock();
 	_pDataBoard.m_solidLDNIBody->CompRange();
 	_pDataBoard.m_solidLDNIBody->BuildGLList(_pDataBoard.m_bLDNISampleNormalDisplay);
-//	printf("Build point GL List Time (ms): %ld\n",clock()-time); time=clock();
+//	printf("Build point GL List Time (ms): %ld\n",(clock()-time)/(CLOCKS_PER_SEC/1000)); time=clock();
 	_pGLK.DelDisplayObj2(_pDataBoard.m_solidLDNIBody);
 	_pGLK.AddDisplayObj(_pDataBoard.m_solidLDNIBody, true);
 }
@@ -1270,7 +1281,7 @@ void menuFuncLDNIContouring()
 	long time=clock();	QuadTrglMesh *mesh;
 	LDNIcudaOperation::LDNIToBRepReconstruction(_pDataBoard.m_solidLDNIBody->m_cudaSolid,mesh,nRes,bWithSelfIntersectionPreventation);
 	printf("--------------------------------------------\n");
-	printf("Total time of mesh contouring: %ld (ms)\n",clock()-time); time=clock();
+	printf("Total time of mesh contouring: %ld (ms)\n",(clock()-time)/(CLOCKS_PER_SEC/1000)); time=clock();
 	_pDataBoard.m_polyMeshBody->GetMeshList().AddTail(mesh);	
 	_pDataBoard.m_polyMeshBody->computeRange();
 	if (_pGLK.GetShading()) _pDataBoard.m_polyMeshBody->BuildGLList(true);
@@ -1279,7 +1290,7 @@ void menuFuncLDNIContouring()
 	_pGLK.DelDisplayObj2(_pDataBoard.m_solidLDNIBody);	
 	delete (_pDataBoard.m_solidLDNIBody);
 	_pDataBoard.m_solidLDNIBody=NULL;
-	printf("Build GL List Time (ms): %ld\n",clock()-time); time=clock();
+	printf("Build GL List Time (ms): %ld\n",(clock()-time)/(CLOCKS_PER_SEC/1000)); time=clock();
 
 	_pGLK.refresh();
 }
@@ -1306,7 +1317,7 @@ void menuFuncLDNINormalRecon(bool bWithOrtVoting)
 	long time=clock();
 	LDNIcudaOperation::OrientedNormalReconstruction((_pDataBoard.m_solidLDNIBody->m_cudaSolid), 3, bWithOrtVoting);
 	printf("------------------------------------------------\n");
-	printf("The reconstruction takes: %ld (ms)\n\n",clock()-time);
+	printf("The reconstruction takes: %ld (ms)\n\n",(clock()-time)/(CLOCKS_PER_SEC/1000));
 
 	_pDataBoard.m_solidLDNIBody->BuildGLList(_pDataBoard.m_bLDNISampleNormalDisplay);
 	_pGLK.refresh();
@@ -1330,7 +1341,7 @@ void menuFuncLDNINormalBilateralFiltering(bool bCUDA)
 	else
 		LDNIcpuOperation::ParallelProcessingNormalVector((_pDataBoard.m_solidLDNIBody->m_solid), 3);
 	printf("------------------------------------------------\n");
-	printf("The filtering takes: %ld (ms)\n\n",clock()-time);
+	printf("The filtering takes: %ld (ms)\n\n",(clock()-time)/(CLOCKS_PER_SEC/1000));
 
 	_pDataBoard.m_solidLDNIBody->BuildGLList(_pDataBoard.m_bLDNISampleNormalDisplay);
 	_pGLK.refresh();
@@ -1366,7 +1377,7 @@ void menuFuncLDNISuperUnion()
 	LDNIcudaOperation::SuperUnionOperation(cudaSolid,&_pDataBoard.m_polyMeshBody->GetMeshList(),bndBox,nRes);
 
 	printf("--------------------------------------------\n");
-	printf("Total Sampling Time: %ld (ms)\n",clock()-time); time=clock();
+	printf("Total Sampling Time: %ld (ms)\n",(clock()-time)/(CLOCKS_PER_SEC/1000)); time=clock();
 	printf("--------------------------------------------\n\n");
 
 	if (_pDataBoard.m_solidLDNIBody) _pGLK.DelDisplayObj(_pDataBoard.m_solidLDNIBody);
@@ -1386,11 +1397,11 @@ void menuFuncLDNISuperUnion()
 	solidBody->CompRange();
 	time=clock();
 	solidBody->BuildGLList(_pDataBoard.m_bLDNISampleNormalDisplay);
-	printf("Build point GL List Time (ms): %ld\n",clock()-time); time=clock();
+	printf("Build point GL List Time (ms): %ld\n",(clock()-time)/(CLOCKS_PER_SEC/1000)); time=clock();
 	printf("--------------------------------------------\n");
 	_pDataBoard.m_solidLDNIBody=solidBody;
 	_pGLK.AddDisplayObj(solidBody, true);
-	printf("Refresh time (ms): %ld\n",clock()-time); time=clock();
+	printf("Refresh time (ms): %ld\n",(clock()-time)/(CLOCKS_PER_SEC/1000)); time=clock();
 }
 
 
@@ -1459,7 +1470,7 @@ void menuFuncLDNIScaffoldConstruction(bool bCUDA)
 	solidBody->SetLighting(bLight);	solidBody->CompRange();
 	time=clock();
 	solidBody->BuildGLList(_pDataBoard.m_bLDNISampleNormalDisplay);
-	printf("Build point GL List Time (ms): %ld\n",clock()-time); time=clock();
+	printf("Build point GL List Time (ms): %ld\n",(clock()-time)/(CLOCKS_PER_SEC/1000)); time=clock();
 	_pGLK.AddDisplayObj(solidBody, true);
 	_pDataBoard.m_solidLDNIBody=solidBody;
 
@@ -1545,7 +1556,7 @@ void menuFuncLDNIBoolean(bool bCUDA)
 		}
 	}
 	printf("--------------------------------------------\n");
-	printf("Total Processing Time: %ld (ms)\n",clock()-time); time=clock();
+	printf("Total Processing Time: %ld (ms)\n",(clock()-time)/(CLOCKS_PER_SEC/1000)); time=clock();
 	printf("--------------------------------------------\n\n");
 
 	if (meshA!=meshB) {
@@ -1580,7 +1591,7 @@ void menuFuncLDNIBoolean(bool bCUDA)
 	solidBody->SetLighting(bLight);	solidBody->CompRange();
 	time=clock();
 	solidBody->BuildGLList(_pDataBoard.m_bLDNISampleNormalDisplay);
-	printf("Build point GL List Time (ms): %ld\n",clock()-time); time=clock();
+	printf("Build point GL List Time (ms): %ld\n",(clock()-time)/(CLOCKS_PER_SEC/1000)); time=clock();
 	_pGLK.AddDisplayObj(solidBody, true);
 	_pDataBoard.m_solidLDNIBody=solidBody;
 }
@@ -1678,7 +1689,7 @@ void menuEvent(int idCommand)
 			if (_pDataBoard.m_polyMeshBody!=NULL) {
 				long time=clock();
 				_pDataBoard.m_polyMeshBody->BuildGLList(false);
-				printf("Build GL List Time (ms): %ld\n",clock()-time); time=clock();
+				printf("Build GL List Time (ms): %ld\n",(clock()-time)/(CLOCKS_PER_SEC/1000)); time=clock();
 			}
 		}
 		_pGLK.refresh();
@@ -1864,6 +1875,7 @@ int buildPopupMenu (void)
 	return mainMenu;
 }
 
+/*
 void cmd_boolean(bool bCUDA, int nOperatorType, int nRes)
 {
 	QuadTrglMesh *meshA=(QuadTrglMesh *)(_pDataBoard.m_polyMeshBody->GetMeshList().GetHead());
@@ -1890,7 +1902,7 @@ void cmd_boolean(bool bCUDA, int nOperatorType, int nRes)
 	}
 
 	printf("--------------------------------------------\n");
-	printf("Total Processing Time: %ld (ms)\n",clock()-time); time=clock();
+	printf("Total Processing Time: %ld (ms)\n",(clock()-time)/(CLOCKS_PER_SEC/1000)); time=clock();
 	printf("--------------------------------------------\n\n");
 
 	if (meshA!=meshB) {
@@ -1925,12 +1937,12 @@ void cmd_boolean(bool bCUDA, int nOperatorType, int nRes)
 	solidBody->SetLighting(bLight);	solidBody->CompRange();
 	time=clock();
 	solidBody->BuildGLList(_pDataBoard.m_bLDNISampleNormalDisplay);
-	printf("Build point GL List Time (ms): %ld\n",clock()-time); time=clock();
+	printf("Build point GL List Time (ms): %ld\n",(clock()-time)/(CLOCKS_PER_SEC/1000)); time=clock();
 	_pGLK.AddDisplayObj(solidBody, true);
 	_pDataBoard.m_solidLDNIBody=solidBody;
 }
 
-void cmd_contour()
+void cmd_mesh()
 {
 	if (_pDataBoard.m_solidLDNIBody==NULL || _pDataBoard.m_solidLDNIBody->m_cudaSolid==NULL) {
 		printf("None cuda-LDNI-solid found!\n");	return;
@@ -1958,7 +1970,7 @@ void cmd_contour()
 	long time=clock();	QuadTrglMesh *mesh;
 	LDNIcudaOperation::LDNIToBRepReconstruction(_pDataBoard.m_solidLDNIBody->m_cudaSolid,mesh,nRes,bWithSelfIntersectionPreventation);
 	printf("--------------------------------------------\n");
-	printf("Total time of mesh contouring: %ld (ms)\n",clock()-time); time=clock();
+	printf("Total time of mesh contouring: %ld (ms)\n",(clock()-time)/(CLOCKS_PER_SEC/1000)); time=clock();
 	_pDataBoard.m_polyMeshBody->GetMeshList().AddTail(mesh);	
 	_pDataBoard.m_polyMeshBody->computeRange();
 	if (_pGLK.GetShading()) _pDataBoard.m_polyMeshBody->BuildGLList(true);
@@ -1967,59 +1979,88 @@ void cmd_contour()
 	_pGLK.DelDisplayObj2(_pDataBoard.m_solidLDNIBody);	
 	delete (_pDataBoard.m_solidLDNIBody);
 	_pDataBoard.m_solidLDNIBody=NULL;
-	printf("Build GL List Time (ms): %ld\n",clock()-time); time=clock();
+	printf("Build GL List Time (ms): %ld\n",(clock()-time)/(CLOCKS_PER_SEC/1000)); time=clock();
 
 	_pGLK.refresh();
-}
+}*/
 
-void cmd(int argc, char *argv[]) {
+int cmd(int argc, char *argv[]) {
 	int cnt = 1;
 	bool bCUDA = true;
 	int nOperatorType = 0; // for boolean
 	int nRes = -1;
 	while (cnt < argc) {
 		std::string arg(argv[cnt]);
-		if (arg == "-b") { // boolean
-			// -b <fn_mesh_A> -r <resolution> -<operation> <fn_mesh_B>
-			if (std::string(argv[cnt+2]) != "-r")
-			{
-				std::cout << "requires resolution -r" << std::endl;
-				return;
-			}
-			nRes = atoi(argv[cnt+3]);
+		if (arg == "-I") { // input
 			OpenFile(argv[cnt+1]);
-			cnt += 4;
-		}
-		else if (arg == "-u") { // union
-			nOperatorType=0;
-			OpenFile(argv[cnt+1]);
-			cmd_boolean(bCUDA, nOperatorType, nRes);
 			cnt += 2;
 		}
-		else if (arg == "-i") { // intersection
-			nOperatorType=1;
-			OpenFile(argv[cnt+1]);
-			cmd_boolean(bCUDA, nOperatorType, nRes);
+		else if (arg == "-L") { // input list
+			OpenList(argv[cnt+1]);
 			cnt += 2;
 		}
-		else if (arg == "-d") { // difference
-			nOperatorType=2;
-			OpenFile(argv[cnt+1]);
-			cmd_boolean(bCUDA, nOperatorType, nRes);
-			cnt += 2;
-		}
-		else if (arg == "-r") { // inversed-difference
-			nOperatorType=3;
-			OpenFile(argv[cnt+1]);
-			cmd_boolean(bCUDA, nOperatorType, nRes);
-			cnt += 2;
-		}
-		else if (arg == "-o") { // output
-			cmd_contour();
+		else if (arg == "-O") { // output
 			SaveFile(argv[cnt+1]);
 			cnt += 2;
 		}
+		else if (arg == "-m") { // mesh
+			menuFuncLDNIContouring();
+			cnt += 1;
+		}
+		// else if (arg == "-u") { // union
+		// 	nOperatorType=0;
+		// 	OpenFile(argv[cnt+1]);
+		// 	cmd_boolean(bCUDA, nOperatorType, nRes);
+		// 	cnt += 2;
+		// }
+		// else if (arg == "-i") { // intersection
+		// 	nOperatorType=1;
+		// 	OpenFile(argv[cnt+1]);
+		// 	cmd_boolean(bCUDA, nOperatorType, nRes);
+		// 	cnt += 2;
+		// }
+		// else if (arg == "-d") { // difference
+		// 	nOperatorType=2;
+		// 	OpenFile(argv[cnt+1]);
+		// 	cmd_boolean(bCUDA, nOperatorType, nRes);
+		// 	cnt += 2;
+		// }
+		// else if (arg == "-r") { // inversed-difference
+		// 	nOperatorType=3;
+		// 	OpenFile(argv[cnt+1]);
+		// 	cmd_boolean(bCUDA, nOperatorType, nRes);
+		// 	cnt += 2;
+		// }
+		else if (arg == "-b") { // boolean
+			OpenFile(argv[cnt+1]);
+			menuFuncLDNIBoolean(bCUDA);
+			cnt += 2;
+		}
+		else if (arg == "-u") { // super union
+			menuFuncLDNISuperUnion();
+			cnt += 1;
+		}
+		else if (arg == "-c") { // scaffold
+			menuFuncLDNIScaffoldConstruction(bCUDA);
+			cnt += 1;
+		}
+		else if (arg == "-s") { // sampling
+			menuFuncLDNISampling(bCUDA);
+			cnt += 1;
+		}
+		else if (arg == "-f") { // offset
+			menuFuncLDNIOffsetting(true, false, true, true);
+			cnt += 1;
+		}
+		else if (arg == "-e") { // exit
+			return 1;
+		}
+		else {
+			std::cout << "Unknown argument: " << arg << std::endl;;
+			cnt += 1;
+		}
 	}
+	return 0;
 }
 
 
@@ -2069,8 +2110,8 @@ int main(int argc, char *argv[])
 
 	if (argc > 1)
 	{
-		cmd(argc, argv);
-		return 0;
+		if (cmd(argc, argv) > 0)
+			return 0;
 	}
 	
 	printf("--------------------------------------------------\n");

@@ -456,7 +456,7 @@ void LDNIcudaOperation::DistanceFieldGeneration(QuadTrglMesh *mesh, GLuint *vbo,
 
 	
 	cudaThreadSynchronize();
-	printf("time 1 : %ld(ms) \n", clock()-time); time = clock();
+	printf("time 1 : %ld(ms) \n", (clock()-time)/(CLOCKS_PER_SEC/1000)); time = clock();
 	
 	unsigned int* sites_index_y;
 	unsigned int* numofBit = (unsigned int*)malloc(sizeof(unsigned int));
@@ -470,7 +470,7 @@ void LDNIcudaOperation::DistanceFieldGeneration(QuadTrglMesh *mesh, GLuint *vbo,
 	numofBit[0]=dev_ptr[arrsize];
 	
 	cudaThreadSynchronize();
-	printf("time 2 : %ld(ms) \n", clock()-time); time = clock();
+	printf("time 2 : %ld(ms) \n", (clock()-time)/(CLOCKS_PER_SEC/1000)); time = clock();
 	printf("Get Sites in Y : %d \n", numofBit[0]);
 
 
@@ -490,7 +490,7 @@ void LDNIcudaOperation::DistanceFieldGeneration(QuadTrglMesh *mesh, GLuint *vbo,
 	CUDA_SAFE_CALL(cudaMemset( bitDeleted, 0, bitsize*sizeof(unsigned int)) );
 	//LDNIDistanceField__SortProbablySite<<<BLOCKS_PER_GRID,THREADS_PER_BLOCK>>>(sites_y, sites_index_y, res, res*res);
 
-	printf("time 3 : %ld(ms) \n", clock()-time); time = clock();
+	printf("time 3 : %ld(ms) \n", (clock()-time)/(CLOCKS_PER_SEC/1000)); time = clock();
 
 	/* //for debugging
 	thrust::device_ptr<unsigned int> dev_ptr2(temp2D); //	Wrap raw pointers with dev_ptr
@@ -506,7 +506,7 @@ void LDNIcudaOperation::DistanceFieldGeneration(QuadTrglMesh *mesh, GLuint *vbo,
 	cudaThreadSynchronize();
 
 	
-	printf("time 4 : %ld(ms) \n", clock()-time); time = clock();
+	printf("time 4 : %ld(ms) \n", (clock()-time)/(CLOCKS_PER_SEC/1000)); time = clock();
 
 	if (res > 32)
 	LDNIDistanceField__kernelMergeBandsX_2<<<BLOCKS_PER_GRID,THREADS_PER_BLOCK>>>(bitDeleted, sites_y, sites_index_y, make_int3(res, res/2, res),  offdist, 2, 16, res*(res/2)*res);
@@ -525,7 +525,7 @@ void LDNIcudaOperation::DistanceFieldGeneration(QuadTrglMesh *mesh, GLuint *vbo,
 
 	cudaThreadSynchronize();
 
-	printf("time 5 : %ld(ms) \n", clock()-time); time = clock();
+	printf("time 5 : %ld(ms) \n", (clock()-time)/(CLOCKS_PER_SEC/1000)); time = clock();
 
 	unsigned int* sites_index_x;
 	CUDA_SAFE_CALL(cudaMalloc((void**) &sites_index_x, (arrsize+1)*sizeof(unsigned int)));
@@ -538,7 +538,7 @@ void LDNIcudaOperation::DistanceFieldGeneration(QuadTrglMesh *mesh, GLuint *vbo,
 	numofBit[0]=dev_ptr2[arrsize];
 
 	cudaThreadSynchronize();
-	printf("time 6 : %ld(ms) \n", clock()-time); time = clock();
+	printf("time 6 : %ld(ms) \n", (clock()-time)/(CLOCKS_PER_SEC/1000)); time = clock();
 	printf("Get Sites in X : %d \n", numofBit[0]);
 
 	unsigned int* sites_x;
@@ -559,7 +559,7 @@ void LDNIcudaOperation::DistanceFieldGeneration(QuadTrglMesh *mesh, GLuint *vbo,
 	printf("Proved Sites in Y : %d \n", numofBit[0]);*/
 
 	cudaThreadSynchronize();
-	printf("time 7 : %ld(ms) \n", clock()-time); time = clock();
+	printf("time 7 : %ld(ms) \n", (clock()-time)/(CLOCKS_PER_SEC/1000)); time = clock();
 	cudaFree(temp2D);
 	cudaFree(sites_index_y);
 	cudaFree(sites_y);

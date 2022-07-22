@@ -1,4 +1,4 @@
-# LDNI-based-Solid-Modeling
+# LDNI-based Solid Modeling
 
 This project provides a set of solid modeling tools which aims to help process 3D objects with complex topology and geometry that are widely used in many industrial applications (e.g., microstructure design and manufacturing, biomedical products and applications, jewelry products, reverse engineering).
 

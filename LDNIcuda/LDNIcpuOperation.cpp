@@ -253,7 +253,7 @@ bool LDNIcpuOperation::BRepToLDNISampling(QuadTrglMesh *mesh, LDNIcpuSolid* &sol
 	//-----------------------------------------------------------------------------------------
 	//	Step 5:  sampling
 	printf("GLList ID: %d\n",dispListIndex);
-	time=clock()-time;	printf("GL-List building time (including uploading texture) is %ld (ms)\n",time);
+	time=clock()-time;	printf("GL-List building time (including uploading texture) is %ld (ms)\n",time/(CLOCKS_PER_SEC/1000));
 	_decomposeLDNIByFBOPBO(solid,dispListIndex);
 
 	//-----------------------------------------------------------------------------------------
@@ -270,7 +270,7 @@ bool LDNIcpuOperation::BRepToLDNISampling(QuadTrglMesh *mesh, LDNIcpuSolid* &sol
 	glDeleteObjectARB( g_FragShader);
 	glDeleteObjectARB( g_programObj);
 	//------------------------------------------------------------------------
-	printf("\nMemory clean-up time is %ld (ms)\n",clock()-time);
+	printf("\nMemory clean-up time is %ld (ms)\n",(clock()-time)/(CLOCKS_PER_SEC/1000));
 
 	return true;
 }
@@ -775,7 +775,7 @@ void LDNIcpuOperation::_booleanOperation(LDNIcpuSolid* outputSolid, LDNIcpuSolid
 		//printf("num=%d\n",(int)(rayA[arrsize-1].sampleIndex));
 	}
 	free(resArrayIndex);
-	printf("Boolean Operation Time (ms): %ld\n",clock()-time);
+	printf("Boolean Operation Time (ms): %ld\n",(clock()-time)/(CLOCKS_PER_SEC/1000));
 }
 
 void LDNIcpuOperation::_booleanOnRay(LDNIcpuRay *rayA, LDNIcpuSample *sampleArrA, 

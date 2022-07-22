@@ -224,7 +224,7 @@ bool LDNIcpuSolid::FileSave(char *filename)
 	return true;
 }
 
-bool LDNIcpuSolid::FileRead(char *filename)
+bool LDNIcpuSolid::FileRead(const char *filename)
 {
 	FILE *fp;	int res;
 

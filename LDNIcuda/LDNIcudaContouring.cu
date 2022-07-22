@@ -389,7 +389,7 @@ void LDNIcudaOperation::LDNISLAContouring_GenerationwithSupporting(LDNIcudaSolid
 	//----------------------------------------------------------------------------------------------
 	//	Step 6: Clean up memory
 	printf("-------------------------------------------\n");
-	printf("Total time for SLA contour generation and Readback %ld(ms)\n", clock()-time);
+	printf("Total time for SLA contour generation and Readback %ld(ms)\n", (clock()-time)/(CLOCKS_PER_SEC/1000));
 }
 
 void LDNIcudaOperation::LDNIFDMContouring_GenerationwithSupporting(LDNIcudaSolid* solid, ContourMesh *c_mesh, ContourMesh *supt_mesh, float nSampleWidth)
@@ -479,7 +479,7 @@ void LDNIcudaOperation::LDNIFDMContouring_GenerationwithSupporting(LDNIcudaSolid
 	{
 		long time=clock();	printf("Starting to write the SMG file ...\n");
 		c_mesh->Output_SGM_FILE(supt_mesh);		
-		printf("Completed and take %ld (ms)\n",clock()-time);
+		printf("Completed and take %ld (ms)\n",(clock()-time)/(CLOCKS_PER_SEC/1000));
 		
 	}
 	
@@ -489,7 +489,7 @@ void LDNIcudaOperation::LDNIFDMContouring_GenerationwithSupporting(LDNIcudaSolid
 	//----------------------------------------------------------------------------------------------
 	//	Step 6: Clean up memory
 	printf("-------------------------------------------\n");
-	printf("Total time for FDM contour generation and Readback %ld(ms)\n", clock()-time);
+	printf("Total time for FDM contour generation and Readback %ld(ms)\n", (clock()-time)/(CLOCKS_PER_SEC/1000));
 }
 
 
@@ -524,7 +524,7 @@ void LDNIcudaOperation::LDNISLAContouring_Generation(LDNIcudaSolid* solid, Conto
 	LDNISLAContouring_BinarySampling(solid, c_mesh, rotBoundingBox, BinaryImageSize, thickness, clipPlaneNm, pixelWidth, imageRange, angle);
 
 	printf("-------------------------------------------\n");
-	printf("Total time for SLA image generation and Readback %ld(ms)\n", clock()-time);
+	printf("Total time for SLA image generation and Readback %ld(ms)\n", (clock()-time)/(CLOCKS_PER_SEC/1000));
 
 }
 
@@ -605,7 +605,7 @@ void LDNIcudaOperation::LDNIFDMContouring_Generation(LDNIcudaSolid* solid, Conto
 	//----------------------------------------------------------------------------------------------
 	//	Step 6: Clean up memory
 	printf("-------------------------------------------\n");
-	printf("Total time for FDM contour generation and Readback %ld(ms)\n", clock()-time);
+	printf("Total time for FDM contour generation and Readback %ld(ms)\n", (clock()-time)/(CLOCKS_PER_SEC/1000));
 
 	
 	
@@ -923,7 +923,7 @@ void LDNIcudaOperation::LDNIFDMContouring_GrowthAndSwallow(bool *gridNodes, int 
 
 	krFDMContouring_Filter1<<<BLOCKS_PER_GRID,THREADS_PER_BLOCK>>>(solidRegion, suptRegion, imageSize[0]*imageSize[2], imgRes, i);
 	//cudaThreadSynchronize();
-	//printf("2 %ld(ms)\n", clock()-time);
+	//printf("2 %ld(ms)\n", (clock()-time)/(CLOCKS_PER_SEC/1000));
 
 
 	
@@ -949,7 +949,7 @@ void LDNIcudaOperation::LDNIFDMContouring_Closing(int imageSize[], double t, dou
 	//CUDA_SAFE_CALL( cudaMalloc( (void**)&(tempSeeds), imageSize[0]*imageSize[2]*sizeof(bool) ) );
 	CUDA_SAFE_CALL( cudaMemset( (void*)tempSeeds, false, imageSize[0]*imageSize[2]*sizeof(bool) ) );
 	cudaThreadSynchronize();
-	//printf("1 %ld(ms) \n", clock()-time);	time = clock();
+	//printf("1 %ld(ms) \n", (clock()-time)/(CLOCKS_PER_SEC/1000));	time = clock();
 	//CUDA_SAFE_CALL( cudaMemcpy( tempNodes, inputNodes, imageSize[0]*imageSize[2]*sizeof(bool), cudaMemcpyDeviceToDevice ) );
 	krFDMContouring_CopyNodesrom3Dto2D<<<BLOCKS_PER_GRID,THREADS_PER_BLOCK>>>(tempNodes, inputNodes, imageSize[0]*imageSize[2], suptimgRes, i);
 	CUDA_SAFE_CALL( cudaMemcpy( tempSeeds, tempNodes, imageSize[0]*imageSize[2]*sizeof(bool), cudaMemcpyDeviceToDevice ) );
@@ -957,14 +957,14 @@ void LDNIcudaOperation::LDNIFDMContouring_Closing(int imageSize[], double t, dou
 
 	krFDMContouring_Dilation<<<BLOCKS_PER_GRID,THREADS_PER_BLOCK>>>(tempNodes, tempSeeds, imageSize[0]*imageSize[2], imgRes, realThreshold, gridRadius, i);
 	cudaThreadSynchronize();
-	//printf("2 %ld(ms) \n", clock()-time);	time = clock();
+	//printf("2 %ld(ms) \n", (clock()-time)/(CLOCKS_PER_SEC/1000));	time = clock();
 	
 	CUDA_SAFE_CALL( cudaMemcpy( tempNodes, tempSeeds, imageSize[0]*imageSize[2]*sizeof(bool), cudaMemcpyDeviceToDevice ) );
 	krFDMContouring_Erosion<<<BLOCKS_PER_GRID,THREADS_PER_BLOCK>>>(tempNodes, tempSeeds, imageSize[0]*imageSize[2], imgRes, realThreshold, gridRadius);
 
 	krFDMContouring_CopyNodesrom2Dto3D<<<BLOCKS_PER_GRID,THREADS_PER_BLOCK>>>(tempSeeds, inputNodes, imageSize[0]*imageSize[2], suptimgRes, i);
 	cudaThreadSynchronize();
-	//printf("3 %ld(ms) \n", clock()-time);	time = clock();
+	//printf("3 %ld(ms) \n", (clock()-time)/(CLOCKS_PER_SEC/1000));	time = clock();
 
 
 	//cudaFree(tempNodes);
@@ -2201,7 +2201,7 @@ void LDNIcudaOperation::LDNIFDMContouring_BuildDistanceMap(bool *gridNodes, int 
 	cudaUnbindTexture(disTexColor); 
 
 	//--------------------------------------------------------------------------------------------------------------------------------------------------
-	//printf("Finish computing distance field of layer. %ld(ms)\n", clock()-time);
+	//printf("Finish computing distance field of layer. %ld(ms)\n", (clock()-time)/(CLOCKS_PER_SEC/1000));
 	
 
 

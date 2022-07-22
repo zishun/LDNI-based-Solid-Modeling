@@ -163,7 +163,7 @@ bool LDNIcudaSolid::FileSave(char *filename)
 	return true;
 }
 
-bool LDNIcudaSolid::FileRead(char *filename)
+bool LDNIcudaSolid::FileRead(const char *filename)
 {
 	FILE *fp;	int res;
 

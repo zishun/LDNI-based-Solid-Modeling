@@ -316,7 +316,7 @@ bool LDNIcudaOperation::MultiObjectSamplingInOneSolid(LDNIcudaSolid* &solid, GLK
 	glDeleteObjectARB( g_programObj);
 	free(indexCount);
 	//------------------------------------------------------------------------
-	printf("\nMemory clean-up time is %ld (ms)\n",clock()-time);
+	printf("\nMemory clean-up time is %ld (ms)\n",(clock()-time)/(CLOCKS_PER_SEC/1000));
 	printf("--------------------------------------------------------------\n");
 	printf("Total time for sampling is %ld (ms)\n\n",clock()-totalTime);
 
@@ -417,7 +417,7 @@ bool LDNIcudaOperation::_UnionMultiObjects(LDNIcudaSolid* &inputSolid, int res)
 	//-----------------------------------------------------------------------------------
 	//	Step 3: free the memory
 	cudaFree(devIndexArrayResPtr);
-	printf("Boolean Operation Time (ms): %ld\n",clock()-time);
+	printf("Boolean Operation Time (ms): %ld\n",(clock()-time)/(CLOCKS_PER_SEC/1000));
 
 	return true;
 }
@@ -984,7 +984,7 @@ bool LDNIcudaOperation::_booleanOperation(LDNIcudaSolid* outputSolid, LDNIcudaSo
 	//-----------------------------------------------------------------------------------
 	//	Step 3: free the memory
 	cudaFree(devIndexArrayResPtr);
-	printf("Boolean Operation Time (ms): %ld\n",clock()-time);
+	printf("Boolean Operation Time (ms): %ld\n",(clock()-time)/(CLOCKS_PER_SEC/1000));
 
 	return true;
 }
@@ -1045,7 +1045,7 @@ void LDNIcudaOperation::SolidRegularization(LDNIcudaSolid *solid)  // Removing s
 	//-----------------------------------------------------------------------------------
 	//	Step 3: Free the memory
 	cudaFree(devIndexArrayPtrRes);
-	printf("Solid Regularization Time (ms): %ld\n",clock()-time);
+	printf("Solid Regularization Time (ms): %ld\n",(clock()-time)/(CLOCKS_PER_SEC/1000));
 }
 
 void LDNIcudaOperation::_compBoundingCube(QuadTrglMesh *meshA, QuadTrglMesh *meshB, float boundingBox[], int res)
@@ -1245,7 +1245,7 @@ bool LDNIcudaOperation::BRepToLDNISampling(QuadTrglMesh *mesh, LDNIcudaSolid* &s
 	//-----------------------------------------------------------------------------------------
 	//	Step 5:  sampling
 	printf("GLList ID: %d\n",dispListIndex);
-	time=clock()-time;	printf("GL-List building time (including uploading texture) is %ld (ms)\n",time);
+	time=clock()-time;	printf("GL-List building time (including uploading texture) is %ld (ms)\n",time/(CLOCKS_PER_SEC/1000));
 	_decomposeLDNIByFBOPBO(solid,dispListIndex);
 	
 	//-----------------------------------------------------------------------------------------
@@ -1262,7 +1262,7 @@ bool LDNIcudaOperation::BRepToLDNISampling(QuadTrglMesh *mesh, LDNIcudaSolid* &s
 	glDeleteObjectARB( g_FragShader);
 	glDeleteObjectARB( g_programObj);
 	//------------------------------------------------------------------------
-	printf("\nMemory clean-up time is %ld (ms)\n",clock()-time);
+	printf("\nMemory clean-up time is %ld (ms)\n",(clock()-time)/(CLOCKS_PER_SEC/1000));
 	printf("--------------------------------------------------------------\n");
 	printf("Total time for sampling is %ld (ms)\n\n",clock()-totalTime);
 	
@@ -1990,7 +1990,7 @@ void LDNIcudaOperation::_expansionLDNIcudaSolidByNewBoundingBox(LDNIcudaSolid *c
 	boundingBox[5]=boundingBox[4]+gWidth*((float)res);
 
 	printf("-----------------------------------------------------------------------\n");
-	printf("Expanding the working space of existing cuda solid takes: %ld (ms)\n",clock()-time);
+	printf("Expanding the working space of existing cuda solid takes: %ld (ms)\n",(clock()-time)/(CLOCKS_PER_SEC/1000));
 	printf("The resolution is extended from %d to %d\n",res-total,res);
 	printf("-----------------------------------------------------------------------\n");
 }
@@ -2873,7 +2873,7 @@ bool LDNIcudaOperation::InstancedBRepToLDNISampling(QuadTrglMesh *mesh, LDNIcuda
 	glDeleteObjectARB( g_FragShader);
 	glDeleteObjectARB( g_programObj);
 	//------------------------------------------------------------------------
-	printf("\nMemory clean-up time is %ld (ms)\n",clock()-time);
+	printf("\nMemory clean-up time is %ld (ms)\n",(clock()-time)/(CLOCKS_PER_SEC/1000));
 	printf("--------------------------------------------------------------\n");
 	printf("Total time for sampling is %ld (ms)\n\n",clock()-totalTime);
 

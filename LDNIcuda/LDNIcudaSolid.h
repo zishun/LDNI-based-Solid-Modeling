@@ -71,7 +71,7 @@ public:
 	void CleanUpSamples();
 
 	bool FileSave(char *filename);
-	bool FileRead(char *filename);
+	bool FileRead(const char *filename);
 	bool ExportLDNFile(char *filename);
 
 	int GetSampleNumber() {return (m_xSampleNum+m_ySampleNum+m_zSampleNum);};

@@ -53,7 +53,7 @@ public:
 	void FreeMemory();
 
 	bool FileSave(char *filename);
-	bool FileRead(char *filename);
+	bool FileRead(const char *filename);
 
 	void ExpansionByNewBoundingBox(float boundingBox[]);
 
